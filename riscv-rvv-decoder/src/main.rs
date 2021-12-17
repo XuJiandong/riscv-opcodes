@@ -1,6 +1,8 @@
 use log::debug;
 use std::fmt;
 use std::io::{self, BufRead};
+#[macro_use]
+mod shortcut;
 
 struct Field {
     pub start: usize,
@@ -141,4 +143,11 @@ fn main() {
         let code = gen_rust(field_strs[0], &fields);
         println!("{}", code);
     }
+}
+
+#[test]
+fn test_shortcut() {
+    define!(vsm_v 31..28=0 27..26=0 25=1 24..20=0xb rs1 14..12=0x0 vs3 6..0=0x27);
+    let code = gen_rust("vsm.v", &vsm_v);
+    assert_eq!(code, "x if x & 0b_1111_11_1_11111_00000_111_00000_1111111 == 0b_0000_00_1_01011_00000_000_00000_0100111 => Some(insts::OP_VSM_V)");
 }
