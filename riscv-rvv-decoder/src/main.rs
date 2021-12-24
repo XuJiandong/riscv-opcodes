@@ -96,7 +96,7 @@ fn gen_rust(name: &str, fields: &Vec<Field>) -> String {
         mask += digit.repeat(field.length).as_ref();
     }
     let new_name = String::from("OP_") + &name.replace(".", "_").to_uppercase();
-    format!("x if x & {} == {} => Some(insts::{})", mask, dest, new_name)
+    format!("x if x & {} == {} => Some(insts::{}),", mask, dest, new_name)
 }
 
 fn main() {
